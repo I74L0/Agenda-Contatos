@@ -21,18 +21,9 @@
             <input id="nome" placeholder="Insira um nome...">
             <input id="telefone" placeholder="Insira um telefone...">
             <label for="estado">Escolha um estado...</label>
-            <select name="estado" id="estado">
-                <option value="">Selecione...</option>
-                <?php
-                $estados = get_estados($conn);
-                foreach ($estados as $estado) {
-                    echo "<option value='", htmlspecialchars($estado[0]), "'>", htmlspecialchars($estado[1]), "</option>";
-                }
-                ?>
-            </select>
+            <input id="estado" placeholder="Insira um estado...">
             <label for="cidade">Escolha uma cidade...</label>
-            <select name="cidade" id="cidade">
-            </select>
+            <input id="cidade" placeholder="Insira uma cidade...">
             <input id="btn-pesquisar" type="button" value="Pesquisar">
         </form>
     </div>
@@ -65,14 +56,6 @@
 
             let contatos = await getContatos(nome, telefone, estado, cidade);
             PopularTabela(contatos);
-            getCidades("").then(data => {
-                input_cidade.innerHTML = "";
-                input_cidade.add(new Option("Selecione...", ""));
-                data.forEach(element => {
-                    const opcao = new Option(element['nome'], element['id_cidade']);
-                    input_cidade.add(opcao);
-                });
-            });
         });
 
         // Popula a tabela com os parâmetros da pesquisa
@@ -141,34 +124,6 @@
                     console.error('Erro:', error);
                 }
                 window.location.reload();
-            }
-        }
-
-        // Renova as opções de cidades de acordo com o estado
-        input_estado.addEventListener('change', (event) => {
-            let estado_selecionado = event.target.value;
-            getCidades(estado_selecionado).then(data => {
-                input_cidade.innerHTML = "";
-                input_cidade.add(new Option("Selecione...", ""));
-                data.forEach(element => {
-                    const opcao = new Option(element['nome'], element['id_cidade']);
-                    input_cidade.add(opcao);
-                });
-            });
-        });
-
-        // Retorna as cidades pertencentes à um estado
-        async function getCidades(estado) {
-            const url = "api/get_cidades.php?id_estado=" + estado;
-            try {
-                const resposta = await fetch(url);
-                if (!resposta.ok) {
-                    throw new Error(`Erro Status: ${resposta.status}`);
-                }
-                const data = await resposta.json();
-                return data;
-            } catch (error) {
-                console.error('Erro:', error);
             }
         }
     </script>

@@ -26,12 +26,12 @@
       $valores[] = "%".$_GET['telefone']."%";
     }
     if (!empty($_GET['estado'])) {
-      $sql .= " AND contatos.id_estado = ?";
-      $valores[] = $_GET['estado'];
+      $sql .= " AND estados.nome LIKE ?";
+      $valores[] = "%".$_GET['estado']."%";
     }
     if (!empty($_GET['cidade'])) {
-      $sql .= " AND contatos.id_cidade = ?";
-      $valores[] = $_GET['cidade'];
+      $sql .= " AND cidades.nome LIKE ?";
+      $valores[] = "%".$_GET['cidade']."%";
     }
     
     if ($stmt = $conn->prepare($sql)) {
