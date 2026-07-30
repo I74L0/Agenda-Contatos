@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -21,13 +22,14 @@
         $telefone = strip_tags($_POST['telefone']);
         $cidade = strip_tags($_POST['cidade']);
         $estado = strip_tags($_POST['estado']);
-        
+
         if (empty($nome) || empty($telefone) || empty($estado)) {
             die("Erro: Todos os campos são obrigatórios!");
         }
 
         set_contatos($conn, $nome, $telefone, $cidade, $estado);
 
+        $_SESSION['mensagem'] = "Contato criado com sucesso!";
         header("Location: index.php");
         exit();
     }
