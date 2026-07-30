@@ -132,11 +132,11 @@
 
         // Retorna as cidades pertencentes à um estado
         async function getCidades(estado) {
-            const url = "http://localhost:8080/api/get_cidades.php?id_estado=" + estado;
+            const url = "api/get_cidades.php?id_estado=" + estado;
             try {
                 const resposta = await fetch(url);
                 if (!resposta.ok) {
-                    throw new Error(`Erro Status: ${response.status}`);
+                    throw new Error(`Erro Status: ${resposta.status}`);
                 }
                 const data = await resposta.json();
                 return data;
