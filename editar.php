@@ -21,11 +21,11 @@
         $contato = get_contato_by_id($conn, $id_contato);
     }
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $id = $_POST['id'];
-        $nome = $_POST['nome'];
-        $telefone = $_POST['telefone'];
-        $cidade = $_POST['cidade'];
-        $estado = $_POST['estado'];
+        $id = strip_tags($_POST['id']);
+        $nome = strip_tags($_POST['nome']);
+        $telefone = strip_tags($_POST['telefone']);
+        $cidade = strip_tags($_POST['cidade']);
+        $estado = strip_tags($_POST['estado']);
 
         update_contato_by_id($conn, $id, $nome, $telefone, $cidade, $estado);
 

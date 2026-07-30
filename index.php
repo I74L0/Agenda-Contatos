@@ -97,10 +97,10 @@
                 let cidade = nova_linha.insertCell(2);
                 let estado = nova_linha.insertCell(3);
                 let acoes = nova_linha.insertCell(4);
-                nome.innerHTML = contato.nome;
-                telefone.innerHTML = contato.telefone;
-                cidade.innerHTML = contato.cidade;
-                estado.innerHTML = contato.estado;
+                nome.textContent = contato.nome;
+                telefone.textContent = contato.telefone;
+                cidade.textContent = contato.cidade;
+                estado.textContent = contato.estado;
                 acoes.innerHTML = `
                     <button onclick="editByID(${contato.id_contato})">Editar</button>
                     <button onclick="deleteByID(${contato.id_contato})">Excluir</button>

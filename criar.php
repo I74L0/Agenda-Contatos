@@ -16,10 +16,10 @@
     <h1>Agenda de Contatos</h1>
     <?php
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $nome = $_POST['nome'];
-        $telefone = $_POST['telefone'];
-        $cidade = $_POST['cidade'];
-        $estado = $_POST['estado'];
+        $nome = strip_tags($_POST['nome']);
+        $telefone = strip_tags($_POST['telefone']);
+        $cidade = strip_tags($_POST['cidade']);
+        $estado = strip_tags($_POST['estado']);
 
         set_contatos($conn, $nome, $telefone, $cidade, $estado);
 
