@@ -21,6 +21,10 @@
         $contato = get_contato_by_id($conn, $id_contato);
     }
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        if (empty($nome) || empty($telefone) || empty($estado)) {
+            die("Erro: Todos os campos são obrigatórios!");
+        }
+        
         $id = strip_tags($_POST['id']);
         $nome = strip_tags($_POST['nome']);
         $telefone = strip_tags($_POST['telefone']);

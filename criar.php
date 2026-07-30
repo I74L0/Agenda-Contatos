@@ -16,6 +16,10 @@
     <h1>Agenda de Contatos</h1>
     <?php
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
+        if (empty($nome) || empty($telefone) || empty($estado)) {
+            die("Erro: Todos os campos são obrigatórios!");
+        }
+        
         $nome = strip_tags($_POST['nome']);
         $telefone = strip_tags($_POST['telefone']);
         $cidade = strip_tags($_POST['cidade']);
