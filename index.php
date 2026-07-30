@@ -26,7 +26,7 @@
                 <?php
                 $estados = get_estados($conn);
                 foreach ($estados as $estado) {
-                    echo "<option value='", $estado[0], "'>", $estado[1], "</option>";
+                    echo "<option value='", htmlspecialchars($estado[0]), "'>", htmlspecialchars($estado[1]), "</option>";
                 }
                 ?>
             </select>

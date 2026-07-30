@@ -37,11 +37,11 @@
     <div>
         <h3>Formulário de edição</h3>
         <form id="criar" action="" method="POST">
-            <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>">
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($_GET['id']); ?>">
             <label for="nome">Nome:</label>
-            <input type="text" placeholder="Nome" name="nome" value="<?php echo $contato['nome']; ?>" required><br><br>
+            <input type="text" placeholder="Nome" name="nome" value="<?php echo htmlspecialchars($contato['nome']); ?>" required><br><br>
             <label for="telefone">Telefone:</label>
-            <input type="text" id="telefone" name="telefone" value="<?php echo $contato['telefone']; ?>" placeholder="(99) 99999-9999" required><br><br>
+            <input type="text" id="telefone" name="telefone" value="<?php echo htmlspecialchars($contato['telefone']); ?>" placeholder="(99) 99999-9999" required><br><br>
             <label for="estado">Estado:</label>
             <select name="estado" id="estado" required>
                 <option value="" hidden>Selecione...</option>
