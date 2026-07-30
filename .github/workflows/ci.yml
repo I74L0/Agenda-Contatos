@@ -1,0 +1,25 @@
+name: CI - Verificação PHP
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  testar-php:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Verificar sintaxe PHP
+        run: |
+          for file in $(find . -name "*.php"); do
+            php -l $file
+          done
