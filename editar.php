@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -21,9 +23,6 @@
         $contato = get_contato_by_id($conn, $id_contato);
     }
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        if (empty($nome) || empty($telefone) || empty($estado)) {
-            die("Erro: Todos os campos são obrigatórios!");
-        }
         
         $id = strip_tags($_POST['id']);
         $nome = strip_tags($_POST['nome']);
@@ -31,8 +30,13 @@
         $cidade = strip_tags($_POST['cidade']);
         $estado = strip_tags($_POST['estado']);
 
+        if (empty($nome) || empty($telefone) || empty($estado)) {
+            die("Erro: Todos os campos são obrigatórios!");
+        }
+
         update_contato_by_id($conn, $id, $nome, $telefone, $cidade, $estado);
 
+        $_SESSION['mensagem'] = "Contato atualizado com sucesso!";
         header("Location: index.php");
         exit();
     }

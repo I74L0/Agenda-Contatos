@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -12,7 +13,7 @@
 </head>
 
 <body>
-    <a href="criar.php">Criar</a>
+    <a href="criar.php">Criar</a><br>
     <h1>Agenda de Contatos</h1>
     <hr>
     <div>
@@ -41,6 +42,12 @@
             <tbody id="table-body"></tbody>
         </table>
     </div>
+    <?php
+    if (isset($_SESSION['mensagem'])) {
+        echo '<div class="mensagem">' . $_SESSION['mensagem'] . '</div>';
+        unset($_SESSION['mensagem']);
+    }
+    ?>
     <script>
         const input_nome = document.getElementById('nome');
         const input_telefone = document.getElementById('telefone');

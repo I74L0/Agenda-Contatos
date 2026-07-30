@@ -12,3 +12,7 @@ td {
 table {
   min-width: 400px;
 }
+
+.mensagem {
+  color: green;
+}
