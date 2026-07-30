@@ -66,17 +66,20 @@
             </select><br><br>
             <label for="cidade">Cidade:</label>
             <select name="cidade" id="cidade" required>
-                <option value="">Selecione...</option>
+                <option value="" hidden>Selecione...</option>
                 <?php
                 $cidades = get_cidades($conn);
                 foreach ($cidades as $cidade) {
-                    if ($cidade[0] == $contato['id_cidade']) {
-                        echo "<option value='", $cidade[0], "' selected>", $cidade[1], "</option>";
-                    } else {
-                        echo "<option value='", $cidade[0], "'>", $cidade[1], "</option>";
+                    if ($cidade[2] == $contato['id_estado']) {
+                        if ($cidade[0] == $contato['id_cidade']) {
+                            echo "<option value='", $cidade[0], "' selected>", $cidade[1], "</option>";
+                        } else {
+                            echo "<option value='", $cidade[0], "'>", $cidade[1], "</option>";
+                        }                        
                     }
                 }
                 ?>
+
             </select><br><br>
             <input type="submit" value="Salvar">
         </form>
@@ -86,25 +89,6 @@
         const input_telefone = document.getElementById('telefone');
         const input_estado = document.getElementById('estado');
         const input_cidade = document.getElementById('cidade');
-
-        // Popula a tabela ao carregar a página
-        document.addEventListener("DOMContentLoaded", async (event) => {
-            let nome = input_nome.value;
-            let telefone = input_telefone.value;
-            let estado = input_estado.value;
-            let cidade = input_cidade.value;
-
-            let contatos = await getContatos(nome, telefone, estado, cidade);
-            PopularTabela(contatos);
-            getCidades("").then(data => {
-                input_cidade.innerHTML = "";
-                input_cidade.add(new Option("Selecione...", ""));
-                data.forEach(element => {
-                    const opcao = new Option(element['nome'], element['id_cidade']);
-                    input_cidade.add(opcao);
-                });
-            });
-        });
         
         // Aplica máscara no campo de telefone
         const telefone_input = document.getElementById('telefone');
@@ -135,7 +119,6 @@
                     cidade.add(opcao);
                 });
             });
-
         }
 
         // Retorna as cidades pertencentes à um estado
