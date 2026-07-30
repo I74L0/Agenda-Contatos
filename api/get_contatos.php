@@ -17,6 +17,10 @@
 
     $valores = [];
 
+    if (!empty($_GET['id_contato'])) {
+      $sql .= " AND contatos.id_contato = ?";
+      $valores[] = $_GET['id_contato'];
+    }
     if (!empty($_GET['nome'])) {
       $sql .= " AND contatos.nome LIKE ?";
       $valores[] = "%".$_GET['nome']."%";
