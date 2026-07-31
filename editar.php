@@ -9,7 +9,7 @@
     <title>Agenda de Contatos</title>
     <link rel="stylesheet" href="style.css">
     <?php
-    include 'config/funcoes.php';
+    include 'api/update_contato.php';
     ?>
 </head>
 
@@ -17,11 +17,6 @@
     <a href="index.php">Home</a>
     <h1>Agenda de Contatos</h1>
     <?php
-    $contato = "";
-    if ($_SERVER['REQUEST_METHOD'] == "GET") {
-        $id_contato = $_GET['id'];
-        $contato = get_contato_by_id($conn, $id_contato);
-    }
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $id = strip_tags($_POST['id']);
         $nome = strip_tags($_POST['nome']);
@@ -33,7 +28,7 @@
             die("Erro: Todos os campos são obrigatórios!");
         }
 
-        update_contato_by_id($conn, $id, $nome, $telefone, $cidade, $estado);
+        update_contato($conn, $id, $nome, $telefone, $cidade, $estado);
 
         $_SESSION['mensagem'] = "Contato atualizado com sucesso!";
         header("Location: index.php");

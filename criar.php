@@ -8,7 +8,7 @@
     <title>Agenda de Contatos</title>
     <link rel="stylesheet" href="style.css">
     <?php
-    include 'config/funcoes.php';
+    include 'api/set_contato.php';
     ?>
 </head>
 
@@ -27,7 +27,7 @@
             die("Erro: Todos os campos são obrigatórios!");
         }
 
-        set_contatos($conn, $nome, $telefone, $cidade, $estado);
+        set_contato($conn, $nome, $telefone, $cidade, $estado);
 
         $_SESSION['mensagem'] = "Contato criado com sucesso!";
         header("Location: index.php");
