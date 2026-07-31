@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <a href="criar.php">Criar Contato</a> | <a href="criar_cidade.php">Criar Cidade</a><br>
+    <a href="criar_contato.php">Criar Contato</a> | <a href="criar_cidade.php">Criar Cidade</a><br>
     <h1>Agenda de Contatos</h1>
     <hr>
     <div>
