@@ -112,14 +112,14 @@
 
         // Função para editar contato (Vai para outra tela)
         function editByID(id) {
-            window.location.href = "editar.php?id=" + id;
+            window.location.href = "editar_contato.php?id=" + id;
         }
 
         // Função para deletar contato (assíncrona)
         async function deleteByID(id) {
             let confirmacao = confirm("Você deseja realmente deletar esse contato?");
             if (confirmacao) {
-                const url = "api/deletar_contato_by_id.php?id=" + id;
+                const url = "api/delete_contato.php?id=" + id;
                 try {
                     const resposta = await fetch(url);
                     const data = await resposta.json();
