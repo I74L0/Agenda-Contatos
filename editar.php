@@ -23,14 +23,13 @@
         $contato = get_contato_by_id($conn, $id_contato);
     }
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        
         $id = strip_tags($_POST['id']);
         $nome = strip_tags($_POST['nome']);
         $telefone = strip_tags($_POST['telefone']);
         $cidade = strip_tags($_POST['cidade']);
         $estado = strip_tags($_POST['estado']);
 
-        if (empty($nome) || empty($telefone) || empty($estado)) {
+        if (empty($nome) || empty($telefone) || empty($estado) || empty($cidade)) {
             die("Erro: Todos os campos são obrigatórios!");
         }
 
@@ -47,39 +46,16 @@
         <form id="criar" action="" method="POST">
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($_GET['id']); ?>">
             <label for="nome">Nome:</label>
-            <input type="text" placeholder="Nome" name="nome" value="<?php echo htmlspecialchars($contato['nome']); ?>" required><br><br>
+            <input type="text" id="nome" placeholder="Nome" name="nome" required><br><br>
             <label for="telefone">Telefone:</label>
-            <input type="text" id="telefone" name="telefone" value="<?php echo htmlspecialchars($contato['telefone']); ?>" placeholder="(99) 99999-9999" required><br><br>
+            <input type="text" id="telefone" name="telefone" placeholder="(99) 99999-9999" required><br><br>
             <label for="estado">Estado:</label>
             <select name="estado" id="estado" required>
                 <option value="" hidden>Selecione...</option>
-                <?php
-                $estados = get_estados($conn);
-                foreach ($estados as $estado) {
-                    if ($estado[0] == $contato['id_estado']) {
-                        echo "<option value='", $estado[0], "' selected>", $estado[1], "</option>";
-                    } else {
-                        echo "<option value='", $estado[0], "'>", $estado[1], "</option>";
-                    }
-                }
-                ?>
             </select><br><br>
             <label for="cidade">Cidade:</label>
             <select name="cidade" id="cidade" required>
                 <option value="" hidden>Selecione...</option>
-                <?php
-                $cidades = get_cidades($conn);
-                foreach ($cidades as $cidade) {
-                    if ($cidade[2] == $contato['id_estado']) {
-                        if ($cidade[0] == $contato['id_cidade']) {
-                            echo "<option value='", $cidade[0], "' selected>", $cidade[1], "</option>";
-                        } else {
-                            echo "<option value='", $cidade[0], "'>", $cidade[1], "</option>";
-                        }                        
-                    }
-                }
-                ?>
-
             </select><br><br>
             <input type="submit" value="Salvar">
         </form>
@@ -89,7 +65,39 @@
         const input_telefone = document.getElementById('telefone');
         const input_estado = document.getElementById('estado');
         const input_cidade = document.getElementById('cidade');
-        
+        const parametro_url = new URLSearchParams(window.location.search);
+
+        // Popula os campos ao carregar a página
+        document.addEventListener("DOMContentLoaded", async (event) => {
+            let contato = await getContatoById(parametro_url.get('id'));
+            getEstados().then(data => {
+                data.forEach(element => {
+                    let opcao;
+                    if (contato[0].id_estado == element.id_estado) {
+                        opcao = new Option(element.nome, element.id_estado, true, true);
+                    } else {
+                        opcao = new Option(element.nome, element.id_estado);
+                    }
+                    input_estado.add(opcao);
+                });
+            });
+            getCidades(contato[0].id_estado).then(data => {
+                data.forEach(cidade => {
+                    console.log(cidade.id_cidade);
+                    console.log(contato[0].id_cidade);
+                    let opcao;
+                    if (contato[0].id_cidade == cidade.id_cidade) {
+                        opcao = new Option(cidade.nome, cidade.id_cidade, true, true);
+                    } else {
+                        opcao = new Option(cidade.nome, cidade.id_cidade);
+                    }
+                    input_cidade.add(opcao);
+                })
+            });
+            input_nome.value = contato[0].nome;
+            input_telefone.value = contato[0].telefone;
+        });
+
         // Aplica máscara no campo de telefone
         const telefone_input = document.getElementById('telefone');
         telefone_input.addEventListener('input', (e) => {
@@ -109,6 +117,7 @@
             }
         });
 
+        // Popula as cidades com base no estado
         function AtualizarCidades(estado_selecionado) {
             const cidade = document.getElementById('cidade');
             cidade.disabled = false;
@@ -119,6 +128,36 @@
                     cidade.add(opcao);
                 });
             });
+        }
+
+        // Retorna o contato pelo id
+        async function getContatoById(id) {
+            const url = "api/get_contatos.php?id_contato=" + id;
+            try {
+                const resposta = await fetch(url);
+                if (!resposta.ok) {
+                    throw new Error(`Erro Status: ${resposta.status}`);
+                }
+                const data = await resposta.json();
+                return data;
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
+
+        // Retorna os estados
+        async function getEstados() {
+            const url = "api/get_estados.php";
+            try {
+                const resposta = await fetch(url);
+                if (!resposta.ok) {
+                    throw new Error(`Erro Status: ${resposta.status}`);
+                }
+                const data = await resposta.json();
+                return data;
+            } catch (error) {
+                console.error('Erro:', error);
+            }
         }
 
         // Retorna as cidades pertencentes à um estado

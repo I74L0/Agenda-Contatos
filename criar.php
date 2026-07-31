@@ -17,13 +17,13 @@
     <h1>Agenda de Contatos</h1>
     <?php
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        
+
         $nome = strip_tags($_POST['nome']);
         $telefone = strip_tags($_POST['telefone']);
         $cidade = strip_tags($_POST['cidade']);
         $estado = strip_tags($_POST['estado']);
 
-        if (empty($nome) || empty($telefone) || empty($estado)) {
+        if (empty($nome) || empty($telefone) || empty($estado) || empty($cidade)) {
             die("Erro: Todos os campos são obrigatórios!");
         }
 
@@ -45,12 +45,6 @@
             <label for="estado">Estado:</label>
             <select name="estado" id="estado" required>
                 <option value="" hidden>Selecione...</option>
-                <?php
-                    $estados = get_estados($conn);
-                    foreach ($estados as $estado) {
-                        echo "<option value='", $estado[0], "'>", $estado[1], "</option>";
-                    }
-                ?>
             </select><br><br>
             <label for="cidade">Cidade:</label>
             <select name="cidade" id="cidade" disabled required>
@@ -65,14 +59,12 @@
         const input_estado = document.getElementById('estado');
         const input_cidade = document.getElementById('cidade');
 
-        // Popula a tabela ao carregar a página
+        // Popula os selects ao carregar a página
         document.addEventListener("DOMContentLoaded", async (event) => {
-            getCidades("").then(data => {
-                input_cidade.innerHTML = "";
-                input_cidade.add(new Option("Selecione...", ""));
+            getEstados().then(data => {
                 data.forEach(element => {
-                    const opcao = new Option(element['nome'], element['id_cidade']);
-                    input_cidade.add(opcao);
+                    let opcao = new Option(element['nome'], element['id_estado']);
+                    input_estado.add(opcao);
                 });
             });
         });
@@ -103,6 +95,21 @@
                 cidade.disabled = true;
             }
         });
+
+        // Retorna os estados
+        async function getEstados() {
+            const url = "api/get_estados.php";
+            try {
+                const resposta = await fetch(url);
+                if (!resposta.ok) {
+                    throw new Error(`Erro Status: ${resposta.status}`);
+                }
+                const data = await resposta.json();
+                return data;
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        }
 
         // Retorna as cidades pertencentes à um estado
         async function getCidades(estado) {

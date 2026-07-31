@@ -6,6 +6,8 @@
     id_contato,
     contatos.nome,
     telefone,
+    contatos.id_estado,
+    contatos.id_cidade,
     cidades.nome AS cidade,
     estados.nome AS estado
     FROM contatos
